@@ -1,3 +1,6 @@
+import 'package:databaseapp/card.dart';
+import 'package:databaseapp/products.dart';
+import 'package:databaseapp/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -58,30 +61,42 @@ class _MyHomePageState extends State<MyHomePage> {
       final map = {
         'id': row[0],
         'name': row[1],
-        'email': row[2],
+        'email': row[3],
       };
       _rows.add(map);
     }
   }
 
+  List<Widget> screens = [
+    MyProducts(myRows: _rows),
+    const MyCard(),
+    const MySettings(),
+  ];
+  int selectedIndex = 0;
+
+  changeindex(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: _rows.length,
-          itemBuilder: (context, index) {
-            final row = _rows[index];
-            return ListTile(
-              title: Text(row['name']),
-              subtitle: Text(row['email']),
-            );
-          },
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: selectedIndex,
+            onTap: changeindex,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.wallet), label: 'items'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.production_quantity_limits),
+                  label: 'products'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), label: 'settings')
+            ]),
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-    );
+        body: screens.elementAt(selectedIndex));
   }
 }
