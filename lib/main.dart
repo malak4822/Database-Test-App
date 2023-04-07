@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> screens = [
-    MyProducts(myRows: _rows),
+    MyProducts(myRows: _rows, searchFunc: showRecords),
     const MyCard(),
     const MySettings(),
   ];
