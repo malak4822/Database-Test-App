@@ -1,19 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ItemPage extends StatefulWidget {
-  const ItemPage({super.key});
+  const ItemPage(
+      {super.key, required this.id, required this.name, required this.email});
+  final id;
+  final name;
+  final email;
 
   @override
-  State<ItemPage> createState() => _ItemPageState();
+  State<ItemPage> createState() => _MyItemPageState();
 }
 
-class _ItemPageState extends State<ItemPage> {
+class _MyItemPageState extends State<ItemPage> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Icon(Icons.settings, size: 50),
-    );
+    return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.insert_emoticon,
+                size: 50,
+                color: Colors.black,
+              ),
+           
+              Text(
+                widget.name,
+                style: GoogleFonts.overpass(fontSize: 40, color: Colors.black),
+              ),
+              Text(
+                widget.email,
+                style: GoogleFonts.overpass(fontSize: 40, color: Colors.black),
+              ),
+            ],
+          ),
+        ));
   }
 }

@@ -2,17 +2,13 @@ import 'package:databaseapp/itempage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyProducts extends StatefulWidget {
-  const MyProducts({super.key, this.myRows, this.searchFunc});
-  final myRows;
-  final searchFunc;
-  @override
-  State<MyProducts> createState() => _MyProductsState();
-}
-
-class _MyProductsState extends State<MyProducts> {
+class MyProducts extends StatelessWidget {
+  MyProducts({super.key, required this.voidCallback, this.myRows});
+  final Future voidCallback;
   bool essa = false;
+  final myRows;
   bool isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,14 +18,23 @@ class _MyProductsState extends State<MyProducts> {
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          children: List.generate(18, (index) {
-            final row = widget.myRows[index];
+          children: List.generate(6, (index) {
+            var row;
+            void e() async {
+              row = await myRows[index];
+            }
+
+            print(row);
             return InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ItemPage()));
+                          builder: (context) => ItemPage(
+                                id: index,
+                                name: row['name'] ?? "",
+                                email: row['email'] ?? "",
+                              )));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -39,13 +44,21 @@ class _MyProductsState extends State<MyProducts> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FutureBuilder(
-                          future: showRecords(),
-                            builder: (context, snapshot) => Text(
-                                  "${row['name']}\n\n${row['email']}",
+                            future: voidCallback.then((value) => value),
+                            builder: ((context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return Text(
+                                  '${row['name']}\n\n${row['email']}',
                                   style: GoogleFonts.overpass(
                                       color: Colors.white, fontSize: 22),
                                   textAlign: TextAlign.center,
-                                )),
+                                );
+                              } else {
+                                return Text(
+                                    snapshot.connectionState.toString());
+                              }
+                            }))
                       ]),
                 ));
           }),

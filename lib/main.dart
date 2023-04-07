@@ -22,7 +22,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-List<Map<String, dynamic>> _rows = [];
+final List<Map<String, dynamic>> _rows = [];
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -48,6 +48,18 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+Future showRecords() async {
+  wynik = await connection.query('SELECT * FROM boys');
+  for (var row in wynik) {
+    final map = {
+      'id': row[0],
+      'name': row[1],
+      'email': row[3],
+    };
+    _rows.add(map);
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
@@ -55,20 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Future showRecords() async {
-    wynik = await connection.query('SELECT * FROM boys');
-    for (var row in wynik) {
-      final map = {
-        'id': row[0],
-        'name': row[1],
-        'email': row[3],
-      };
-      _rows.add(map);
-    }
-  }
-
   List<Widget> screens = [
-    MyProducts(myRows: _rows, searchFunc: showRecords),
+    MyProducts(voidCallback: showRecords(), myRows: _rows),
     const MyCard(),
     const MySettings(),
   ];

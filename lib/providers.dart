@@ -1,3 +1,4 @@
 import 'package:flutter/material.dart';
 
-class MultiProvider extends ChangeNotifier {}
+class MultiProvider extends ChangeNotifier {
+}
