@@ -18,11 +18,13 @@ class MyProducts extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          children: List.generate(6, (index) {
+          children: List.generate(9, (index) {
             var row;
             void e() async {
               row = await myRows[index];
             }
+
+            e();
 
             print(row);
             return InkWell(
@@ -32,8 +34,8 @@ class MyProducts extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => ItemPage(
                                 id: index,
-                                name: row['name'] ?? "",
-                                email: row['email'] ?? "",
+                                name: row['thumbnailURL'].toString() ?? "",
+                                email: row['author'].toString() ?? "",
                               )));
                 },
                 child: Container(
@@ -44,15 +46,23 @@ class MyProducts extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FutureBuilder(
-                            future: voidCallback.then((value) => value),
+                            future: voidCallback,
                             builder: ((context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
-                                return Text(
-                                  '${row['name']}\n\n${row['email']}',
-                                  style: GoogleFonts.overpass(
-                                      color: Colors.white, fontSize: 22),
-                                  textAlign: TextAlign.center,
+                                return Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Image(
+                                        image:
+                                            NetworkImage(row['thumbnailURL'].toString())),
+                                    Text(
+                                      row['author'].toString(),
+                                      style: GoogleFonts.overpass(
+                                          color: Colors.white, fontSize: 22),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ],
                                 );
                               } else {
                                 return Text(

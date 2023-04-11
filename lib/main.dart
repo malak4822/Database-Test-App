@@ -11,9 +11,9 @@ void main() async {
     final conn = await MySqlConnection.connect(ConnectionSettings(
         host: 'hosting2338925.online.pro',
         port: 3306,
-        user: '00799458_f155c735',
+        user: '00799458_malakdb',
         password: 'Rm31Uc8RHwr62aF',
-        db: '00799458_f155c735'));
+        db: '00799458_malakdb'));
     connection = conn;
   } catch (e) {
     print('error to $e');
@@ -49,12 +49,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 Future showRecords() async {
-  wynik = await connection.query('SELECT * FROM boys');
+  wynik = await connection.query('SELECT * FROM thumbnailContent');
   for (var row in wynik) {
     final map = {
       'id': row[0],
-      'name': row[1],
-      'email': row[3],
+      'thumbnailURL': row[1],
+      'author': row[3],
     };
     _rows.add(map);
   }
