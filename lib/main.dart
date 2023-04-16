@@ -1,5 +1,5 @@
 import 'package:databaseapp/card.dart';
-import 'package:databaseapp/products.dart';
+import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
@@ -54,7 +54,7 @@ Future showRecords() async {
     final map = {
       'id': row[0],
       'thumbnailURL': row[1],
-      'author': row[3],
+      'author': row[2],
     };
     _rows.add(map);
   }
@@ -62,13 +62,13 @@ Future showRecords() async {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  void initState() {
-    showRecords();
+  initState() {
     super.initState();
+    showRecords();
   }
 
   List<Widget> screens = [
-    MyProducts(voidCallback: showRecords(), myRows: _rows),
+    MyShop(myRows: _rows),
     const MyCard(),
     const MySettings(),
   ];
@@ -87,10 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
             currentIndex: selectedIndex,
             onTap: changeindex,
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.wallet), label: 'items'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.production_quantity_limits),
-                  label: 'products'),
+                  icon: Icon(Icons.production_quantity_limits), label: 'items'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.card_giftcard), label: 'card'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.settings), label: 'settings')
             ]),
