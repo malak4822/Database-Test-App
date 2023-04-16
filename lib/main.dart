@@ -22,8 +22,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-final List<Map<String, dynamic>> _rows = [];
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -48,27 +46,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-Future showRecords() async {
-  wynik = await connection.query('SELECT * FROM thumbnailContent');
-  for (var row in wynik) {
-    final map = {
-      'id': row[0],
-      'thumbnailURL': row[1],
-      'author': row[2],
-    };
-    _rows.add(map);
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  initState() {
-    super.initState();
-    showRecords();
-  }
-
   List<Widget> screens = [
-    MyShop(myRows: _rows),
+    MyShop(),
     const MyCard(),
     const MySettings(),
   ];

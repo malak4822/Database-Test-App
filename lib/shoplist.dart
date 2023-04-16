@@ -3,11 +3,35 @@ import 'package:databaseapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyShop extends StatelessWidget {
-  MyShop({super.key, this.myRows});
+class MyShop extends StatefulWidget {
+  MyShop({super.key});
+
+  @override
+  State<MyShop> createState() => _MyShopState();
+}
+
+class _MyShopState extends State<MyShop> {
+  late Future func;
+  @override
+  void initState() {
+    func = showRecords();
+    super.initState();
+  }
+
   bool essa = false;
-  final myRows;
   bool isLiked = false;
+  final List<List> _rows = [];
+
+  Future showRecords() async {
+    wynik = await connection.query('SELECT * FROM thumbnailContent');
+    for (var row in wynik) {
+      final map = [row[1], row[2]];
+      setState(() {
+        _rows.add(map);
+      });
+    }
+    debugPrint(_rows.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +45,14 @@ class MyShop extends StatelessWidget {
           children: List.generate(9, (index) {
             return InkWell(
                 onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => ItemPage(
-                  //               id: index,
-                  //               name: myRows['thumbnailURL'].toString(),
-                  //               email: myRows['author'].toString(),
-                  //             )));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ItemPage(
+                                id: index,
+                                img: _rows[index][0].toString(),
+                                name: _rows[index][1].toString(),
+                              )));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -38,7 +62,7 @@ class MyShop extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FutureBuilder(
-                            future: showRecords(),
+                            future: func,
                             builder: ((context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -54,8 +78,7 @@ class MyShop extends StatelessWidget {
                                     children: [
                                       Image(
                                           image: NetworkImage(
-                                              myRows['thumbnailURL']
-                                                  .toString()),
+                                              _rows[index][0].toString()),
                                           loadingBuilder: (BuildContext context,
                                               Widget child,
                                               ImageChunkEvent?
@@ -68,7 +91,7 @@ class MyShop extends StatelessWidget {
                                                     CircularProgressIndicator());
                                           }),
                                       Text(
-                                        myRows['author'].toString(),
+                                        _rows[index][1].toString(),
                                         style: GoogleFonts.overpass(
                                             color: Colors.white, fontSize: 22),
                                         textAlign: TextAlign.center,
