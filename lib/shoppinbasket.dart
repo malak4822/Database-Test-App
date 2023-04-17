@@ -11,9 +11,9 @@ class ShoppIngBasket extends StatefulWidget {
 }
 
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
-  void deleteProduct() {
+  void deleteProduct(int ind) {
     setState(() {
-      // karta.remove();
+      karta.remove(karta[ind]);
     });
     print(karta);
   }
@@ -29,7 +29,8 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
           children: [
             Column(
                 children: List.generate(karta.length, (index) {
-              var item = widget.rows?[index];
+              var item = widget.rows?[karta[index]];
+
               print(item);
 
               return Container(
@@ -42,14 +43,15 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
                     Image(image: NetworkImage(item![0].toString())),
                     IconButton(
                         onPressed: () {
-                          deleteProduct();
+                          deleteProduct(index);
                         },
+                        //  pink    jablko     gorczanek      pink whner    norma yost
                         icon: const Icon(
                           Icons.restore_from_trash_rounded,
                           size: 36,
                           color: Colors.white,
                         )),
-                    // Text(widget.id.toString()),
+                    Text(item[1].toString()),
                     Checkbox(
                       checkColor: Colors.white,
                       value: isChecked,
