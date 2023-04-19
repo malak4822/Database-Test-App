@@ -8,6 +8,10 @@ class MyShop extends StatefulWidget {
 
   @override
   State<MyShop> createState() => _MyShopState();
+
+  List<List>? get getRows {
+    return _rows;
+  }
 }
 
 List<int> karta = [];
@@ -52,6 +56,7 @@ class _MyShopState extends State<MyShop> {
                               id: index,
                               myRows: _rows,
                             )));
+                MaterialPageRoute(builder: (context) => MyHomePage(row: _rows));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -84,20 +89,7 @@ class _MyShopState extends State<MyShop> {
                               style: GoogleFonts.overpass(
                                   color: Colors.white, fontSize: 18),
                               textAlign: TextAlign.center,
-                            )
-                                // loadingBuilder:
-                                //     (BuildContext context,
-                                //         Widget child,
-                                //         ImageChunkEvent?
-                                //             loadingProgress) {
-                                //   if (loadingProgress == null) {
-                                //     return child;
-                                //   }
-                                //   return const Center(
-                                //       child:
-                                //           CircularProgressIndicator());
-                                // },
-                                ;
+                            );
                           }
                         } else {
                           return Text(snapshot.connectionState.toString());

@@ -1,3 +1,4 @@
+import 'package:databaseapp/main.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/shoppinbasket.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,7 @@ class ItemPage extends StatelessWidget {
                             size: 32,
                           ),
                           Text(
-                            'Dodaj Do Koszyka',
+                            'Add To Basket',
                             style: GoogleFonts.overpass(fontSize: 24),
                           )
                         ],
