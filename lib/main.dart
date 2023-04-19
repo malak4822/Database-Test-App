@@ -1,4 +1,3 @@
-import 'package:databaseapp/card.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/settings.dart';
 import 'package:databaseapp/shoppinbasket.dart';
@@ -33,13 +32,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, this.title, this.row});
+  MyHomePage({super.key, this.title, this.row});
 
   final List<List>? row;
   final String? title;
@@ -47,12 +46,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int selectedIndex = 0;
+int currentIndex = 0;
 
+class _MyHomePageState extends State<MyHomePage> {
   changeindex(int index) {
     setState(() {
-      selectedIndex = index;
+      currentIndex = index;
     });
   }
 
@@ -61,16 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
     var sklep = const MyShop();
     var row = sklep.getRows;
 
-    print('row row orw $row');
     List<Widget> screens = [
       const MyShop(),
       ShoppIngBasket(rows: row),
       const MySettings(),
     ];
-
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
+            currentIndex: currentIndex,
             onTap: changeindex,
             items: const [
               BottomNavigationBarItem(
@@ -81,8 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.settings), label: 'settings')
             ]),
         appBar: AppBar(
-          title: Text(widget.title!),
+          title: Text(widget.title ?? 'Flutter Demo'),
         ),
-        body: screens.elementAt(selectedIndex));
+        body: screens.elementAt(currentIndex));
   }
 }

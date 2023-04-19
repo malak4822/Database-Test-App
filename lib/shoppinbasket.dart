@@ -15,7 +15,6 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
     setState(() {
       karta.remove(karta[ind]);
     });
-    print(karta);
   }
 
   bool isChecked = true;
@@ -36,8 +35,6 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
         Column(
             children: List.generate(karta.length, (index) {
           var item = widget.rows?[karta[index]];
-
-          print(item);
 
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8),

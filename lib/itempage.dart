@@ -4,19 +4,30 @@ import 'package:databaseapp/shoppinbasket.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ItemPage extends StatelessWidget {
+class ItemPage extends StatefulWidget {
   const ItemPage({super.key, required this.id, required this.myRows});
   final int id;
   final List<List> myRows;
 
   @override
+  State<ItemPage> createState() => _ItemPageState();
+}
+
+class _ItemPageState extends State<ItemPage> {
+  void changeIndexx() {
+    setState(() {
+      currentIndex = 1;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var images = myRows[id][0].toString();
-    var names = myRows[id][1].toString();
+    var images = widget.myRows[widget.id][0].toString();
+    var names = widget.myRows[widget.id][1].toString();
 
     addProduct() {
-      if (!karta.contains(id)) {
-        karta.add(id);
+      if (!karta.contains(widget.id)) {
+        karta.add(widget.id);
       }
     }
 
@@ -29,12 +40,14 @@ class ItemPage extends StatelessWidget {
               const Text('Dodano Do Koszyka'),
               ElevatedButton(
                   onPressed: () {
+                    changeIndexx();
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ShoppIngBasket(
-                                  rows: myRows,
-                                )));
+                            builder: (context) =>
+                                MyHomePage(row: widget.myRows)));
                   },
                   child: const Text('Przejdź Do Zakupu')),
               ElevatedButton(
@@ -61,7 +74,7 @@ class ItemPage extends StatelessWidget {
                 size: 50,
                 color: Colors.black,
               ),
-              Text(id.toString()),
+              Text(widget.id.toString()),
               Text(
                 names,
                 style: GoogleFonts.overpass(fontSize: 40, color: Colors.black),
@@ -89,7 +102,6 @@ class ItemPage extends StatelessWidget {
                       onPressed: () {
                         addProduct();
                         showAlert();
-                        print(karta);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

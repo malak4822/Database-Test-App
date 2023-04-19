@@ -21,7 +21,7 @@ class _MyShopState extends State<MyShop> {
   late Future func;
   @override
   void initState() {
-    func = showRecords();
+    showRecords();
     super.initState();
   }
 
@@ -56,12 +56,12 @@ class _MyShopState extends State<MyShop> {
                               id: index,
                               myRows: _rows,
                             )));
-                MaterialPageRoute(builder: (context) => MyHomePage(row: _rows));
+                // MaterialPageRoute(builder: (context) => MyHomePage(row: _rows));
               },
               child: Container(
                 decoration: BoxDecoration(
                     boxShadow: const [
-                      BoxShadow(blurRadius: 4),
+                      BoxShadow(blurRadius: 3),
                     ],
                     image: DecorationImage(
                       fit: BoxFit.fill,
@@ -69,36 +69,38 @@ class _MyShopState extends State<MyShop> {
                     ),
                     borderRadius: BorderRadius.circular(16),
                     color: const Color.fromARGB(255, 164, 164, 164)),
-                child: Column(children: [
-                  FutureBuilder(
-                      initialData: '',
-                      future: func,
-                      builder: ((context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.done) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              child: Text('Refresh App'),
-                            );
-                          } else {
-                            return Text(
-                              _rows[index][1].toString(),
-                              style: GoogleFonts.overpass(
-                                  color: Colors.white, fontSize: 18),
-                              textAlign: TextAlign.center,
-                            );
-                          }
-                        } else {
-                          return Text(snapshot.connectionState.toString());
-                        }
-                      }))
-                ]),
+                child: Text(
+                  _rows[index][1].toString(),
+                  style:
+                      GoogleFonts.overpass(color: Colors.white, fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
               ));
         }),
       ),
     );
   }
 }
+
+ // Stack(children: [
+                //   FutureBuilder(
+                //       initialData: '',
+                //       future: func,
+                //       builder: ((context, snapshot) {
+                //         if (snapshot.connectionState ==
+                //             ConnectionState.waiting) {
+                //           return const CircularProgressIndicator();
+                //         } else if (snapshot.connectionState ==
+                //             ConnectionState.done) {
+                //           if (snapshot.hasError) {
+                //             return const Center(
+                //               child: Text('Refresh App'),
+                //             );
+                //           } else {
+                //             return Text('');
+                //           }
+                //         } else {
+                //           return Text(snapshot.connectionState.toString());
+                //         }
+                //       }))
+                // ]),
