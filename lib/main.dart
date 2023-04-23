@@ -1,3 +1,4 @@
+import 'package:databaseapp/bloc/counter_bloc.dart';
 import 'package:databaseapp/card.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/settings.dart';
@@ -29,13 +30,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return BlocProvider(
+        create: (context) => CounterBloc(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: MyHomePage(title: 'Flutter Demo Home Page'),
+        ));
   }
 }
 
