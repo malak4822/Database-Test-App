@@ -14,10 +14,9 @@ List<int> karta = [];
 List<List> _rows = [];
 
 class _MyShopState extends State<MyShop> {
-  late Future func;
   @override
   void initState() {
-    func = showRecords();
+    showRecords();
     super.initState();
   }
 
@@ -36,6 +35,7 @@ class _MyShopState extends State<MyShop> {
 
   @override
   Widget build(BuildContext context) {
+    bool booling = false;
     return Center(
       child: GridView.count(
         crossAxisCount: 2,
@@ -53,60 +53,69 @@ class _MyShopState extends State<MyShop> {
                               myRows: _rows,
                             )));
               },
-              child: Container(
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(blurRadius: 4),
-                    ],
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(_rows[index][0].toString()),
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    color: const Color.fromARGB(255, 164, 164, 164)),
-                child: Column(children: [
-                  FutureBuilder(
-                      initialData: '',
-                      future: func,
-                      builder: ((context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.done) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              child: Text('Refresh App'),
-                            );
-                          } else {
-                            return Text(
-                              _rows[index][1].toString(),
-                              style: GoogleFonts.overpass(
-                                  color: Colors.white, fontSize: 18),
-                              textAlign: TextAlign.center,
-                            )
-                                // loadingBuilder:
-                                //     (BuildContext context,
-                                //         Widget child,
-                                //         ImageChunkEvent?
-                                //             loadingProgress) {
-                                //   if (loadingProgress == null) {
-                                //     return child;
-                                //   }
-                                //   return const Center(
-                                //       child:
-                                //           CircularProgressIndicator());
-                                // },
-                                ;
-                          }
-                        } else {
-                          return Text(snapshot.connectionState.toString());
-                        }
-                      }))
-                ]),
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 4),
+                        ],
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(_rows[index][0].toString()),
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color.fromARGB(255, 164, 164, 164)),
+                  ),
+                  Text(
+                    _rows[index][1].toString(),
+                    style:
+                        GoogleFonts.overpass(color: Colors.white, fontSize: 18),
+                    textAlign: TextAlign.center,
+                  )
+                ],
               ));
         }),
       ),
     );
   }
 }
+
+
+//  child: Column(children: [
+//                       StatefulBuilder(
+//                           builder: (context, setState) => FutureBuilder(
+//                               initialData: '',
+//                               future: func,
+//                               builder: ((context, snapshot) {
+//                                 if (snapshot.connectionState ==
+//                                     ConnectionState.waiting) {
+//                                   return const CircularProgressIndicator();
+//                                 } else if (snapshot.connectionState ==
+//                                     ConnectionState.done) {
+//                                   if (snapshot.hasError) {
+//                                     setState(() {
+//                                       !booling;
+//                                     });
+//                                     setState.call;
+//                                     return Text(
+//                                       _rows[index][1].toString(),
+//                                       style: GoogleFonts.overpass(
+//                                           color: Colors.white, fontSize: 18),
+//                                       textAlign: TextAlign.center,
+//                                     );
+//                                   } else {
+//                                     return Text(
+//                                       _rows[index][1].toString(),
+//                                       style: GoogleFonts.overpass(
+//                                           color: Colors.white, fontSize: 18),
+//                                       textAlign: TextAlign.center,
+//                                     );
+//                                   }
+//                                 } else {
+//                                   return Text(
+//                                       snapshot.connectionState.toString());
+//                                 }
+//                               })))
+//                     ]),

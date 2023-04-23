@@ -27,6 +27,12 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
         body: Center(
             child: ListView(
           children: [
+            Text(
+              "Koszyk",
+              style: GoogleFonts.overpass(
+                  fontWeight: FontWeight.bold, fontSize: 42),
+              textAlign: TextAlign.center,
+            ),
             Column(
                 children: List.generate(karta.length, (index) {
               var item = widget.rows?[karta[index]];
@@ -45,13 +51,15 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
                         onPressed: () {
                           deleteProduct(index);
                         },
-                        //  pink    jablko     gorczanek      pink whner    norma yost
                         icon: const Icon(
                           Icons.restore_from_trash_rounded,
                           size: 36,
                           color: Colors.white,
                         )),
-                    Text(item[1].toString()),
+                    Text(
+                      item[1].toString(),
+                      style: GoogleFonts.overpass(),
+                    ),
                     Checkbox(
                       checkColor: Colors.white,
                       value: isChecked,

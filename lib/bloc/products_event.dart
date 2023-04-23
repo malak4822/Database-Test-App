@@ -1,20 +1,8 @@
-part of 'products_bloc.dart';
+import 'package:meta/meta.dart';
 
-abstract class ProductsEvent extends Equatable {
-  const ProductsEvent();
+@immutable
+abstract class ProductsEvent {}
 
-  @override
-  List<Object> get props => [];
-}
+class ShowSnackBar extends ProductsEvent {}
 
-class ProductInitial extends ProductsEvent {}
-
-class ProductLoading extends ProductsState {}
-
-class ProductLoaded extends ProductsEvent {
-  final Product product;
-  const ProductLoaded(this.product);
-
-  @override
-  List<Object> get props => [product];
-}
+class ChangeValue extends ProductsEvent {}
