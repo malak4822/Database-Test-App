@@ -1,4 +1,4 @@
-import 'package:databaseapp/bloc/products_bloc.dart';
+import 'package:databaseapp/card.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/settings.dart';
 import 'package:databaseapp/shoppinbasket.dart';
@@ -29,46 +29,54 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => ProductsBloc(),
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        ));
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, this.title, this.row});
 
-  final String title;
-
+  final List<List>? row;
+  final String? title;
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+int currentIndex = 0;
+
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> screens = [
-    const MyShop(),
-    const ShoppIngBasket(rows: []),
+    MyShop(),
+    const MyCard(),
     MySettings(),
   ];
   int selectedIndex = 0;
 
   changeindex(int index) {
     setState(() {
-      selectedIndex = index;
+      currentIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var sklep = const MyShop();
+    var row = sklep.getRows;
+
+    List<Widget> screens = [
+      const MyShop(),
+      ShoppIngBasket(rows: row),
+      MySettings(),
+    ];
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
+            currentIndex: currentIndex,
             onTap: changeindex,
             items: const [
               BottomNavigationBarItem(
@@ -79,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.person), label: 'Account')
             ]),
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title ?? 'Flutter Demo'),
         ),
-        body: screens.elementAt(selectedIndex));
+        body: screens.elementAt(currentIndex));
   }
 }

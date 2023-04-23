@@ -8,6 +8,10 @@ class MyShop extends StatefulWidget {
 
   @override
   State<MyShop> createState() => _MyShopState();
+
+  List<List>? get getRows {
+    return _rows;
+  }
 }
 
 List<int> karta = [];
@@ -52,6 +56,7 @@ class _MyShopState extends State<MyShop> {
                               id: index,
                               myRows: _rows,
                             )));
+                // MaterialPageRoute(builder: (context) => MyHomePage(row: _rows));
               },
               child: Stack(
                 alignment: Alignment.topCenter,
@@ -119,3 +124,64 @@ class _MyShopState extends State<MyShop> {
 //                                 }
 //                               })))
 //                     ]),
+
+
+//  child: Column(children: [
+//                       StatefulBuilder(
+//                           builder: (context, setState) => FutureBuilder(
+//                               initialData: '',
+//                               future: func,
+//                               builder: ((context, snapshot) {
+//                                 if (snapshot.connectionState ==
+//                                     ConnectionState.waiting) {
+//                                   return const CircularProgressIndicator();
+//                                 } else if (snapshot.connectionState ==
+//                                     ConnectionState.done) {
+//                                   if (snapshot.hasError) {
+//                                     setState(() {
+//                                       !booling;
+//                                     });
+//                                     setState.call;
+//                                     return Text(
+//                                       _rows[index][1].toString(),
+//                                       style: GoogleFonts.overpass(
+//                                           color: Colors.white, fontSize: 18),
+//                                       textAlign: TextAlign.center,
+//                                     );
+//                                   } else {
+//                                     return Text(
+//                                       _rows[index][1].toString(),
+//                                       style: GoogleFonts.overpass(
+//                                           color: Colors.white, fontSize: 18),
+//                                       textAlign: TextAlign.center,
+//                                     );
+//                                   }
+//                                 } else {
+//                                   return Text(
+//                                       snapshot.connectionState.toString());
+//                                 }
+//                               })))
+//                     ]),
+
+ // Stack(children: [
+                //   FutureBuilder(
+                //       initialData: '',
+                //       future: func,
+                //       builder: ((context, snapshot) {
+                //         if (snapshot.connectionState ==
+                //             ConnectionState.waiting) {
+                //           return const CircularProgressIndicator();
+                //         } else if (snapshot.connectionState ==
+                //             ConnectionState.done) {
+                //           if (snapshot.hasError) {
+                //             return const Center(
+                //               child: Text('Refresh App'),
+                //             );
+                //           } else {
+                //             return Text('');
+                //           }
+                //         } else {
+                //           return Text(snapshot.connectionState.toString());
+                //         }
+                //       }))
+                // ]),
