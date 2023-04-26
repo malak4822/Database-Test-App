@@ -1,3 +1,4 @@
+import 'package:databaseapp/main.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,11 +11,21 @@ class ShoppIngBasket extends StatefulWidget {
   State<ShoppIngBasket> createState() => _ShoppIngBasketState();
 }
 
+void changeIndex() {
+  currentIndex = 0;
+}
+
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
   void deleteProduct(int ind) {
     setState(() {
       karta.remove(karta[ind]);
     });
+  }
+
+  int removeDuplications() {
+    print(karta);
+    var distincted = karta.toSet();
+    return distincted.length;
   }
 
   bool isChecked = true;
@@ -33,7 +44,7 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
           textAlign: TextAlign.center,
         ),
         Column(
-            children: List.generate(karta.length, (index) {
+            children: List.generate(removeDuplications(), (index) {
           var item = widget.rows?[karta[index]];
 
           return Container(
@@ -43,18 +54,21 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image(image: NetworkImage(item![0].toString())),
+                InkWell(
+                  child: Image(image: NetworkImage(item![0].toString())),
+                  onTap: () => changeIndex(),
+                ),
                 IconButton(
                     onPressed: () {
                       deleteProduct(index);
                     },
-                    //  pink    jablko     gorczanek      pink whner    norma yost
                     icon: const Icon(
                       Icons.restore_from_trash_rounded,
                       size: 36,
                       color: Colors.white,
                     )),
                 Text(item[1].toString()),
+                // Text('Ilość : ${widget.itemsNumber}'),
                 Checkbox(
                   checkColor: Colors.white,
                   value: isChecked,

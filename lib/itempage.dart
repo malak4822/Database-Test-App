@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:databaseapp/main.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/shoppinbasket.dart';
@@ -14,10 +16,27 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
+  int itemsNumber = 1;
+
   void changeIndexx() {
     setState(() {
       currentIndex = 1;
     });
+  }
+
+  void incr() {
+    setState(() {
+      ++itemsNumber;
+    });
+  }
+
+  void decr() {
+    if (itemsNumber == 1) {
+    } else {
+      setState(() {
+        --itemsNumber;
+      });
+    }
   }
 
   @override
@@ -26,7 +45,7 @@ class _ItemPageState extends State<ItemPage> {
     var names = widget.myRows[widget.id][1].toString();
 
     addProduct() {
-      if (!karta.contains(widget.id)) {
+      for (int i = 0; i < itemsNumber; ++i) {
         karta.add(widget.id);
       }
     }
@@ -35,27 +54,55 @@ class _ItemPageState extends State<ItemPage> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            actions: [
-              const Text('Dodano Do Koszyka'),
-              ElevatedButton(
-                  onPressed: () {
-                    changeIndexx();
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MyHomePage(row: widget.myRows)));
-                  },
-                  child: const Text('Przejdź Do Zakupu')),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Kupuj dalej'))
+          return Stack(
+            children: [
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(color: Colors.white, height: 120)),
+              AlertDialog(
+                elevation: 0,
+                alignment: Alignment.bottomCenter,
+                insetPadding: const EdgeInsets.only(bottom: 0),
+                actionsPadding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
+                shape: const CircleBorder(eccentricity: 1),
+                actionsAlignment: MainAxisAlignment.spaceEvenly,
+                actionsOverflowAlignment: OverflowBarAlignment.center,
+                actions: [
+                  if (itemsNumber == 1)
+                    Text(
+                      'Dodano do koszyka',
+                      style: GoogleFonts.overpass(fontSize: 22),
+                    ),
+                  if (itemsNumber > 1 && itemsNumber < 5)
+                    Text(
+                      'Dodano do koszyka $itemsNumber produkty',
+                      style: GoogleFonts.overpass(fontSize: 22),
+                    ),
+                  if (itemsNumber > 4)
+                    Text(
+                      'Dodano do koszyka $itemsNumber produktów',
+                      style: GoogleFonts.overpass(fontSize: 22),
+                    ),
+                  ElevatedButton(
+                      onPressed: () {
+                        changeIndexx();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MyHomePage(row: widget.myRows)));
+                      },
+                      child: const Text('Przejdź Do Zakupu')),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Kupuj dalej'))
+                ],
+              )
             ],
           );
           ;
@@ -66,36 +113,36 @@ class _ItemPageState extends State<ItemPage> {
     return Scaffold(
         appBar: AppBar(),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Icon(
+            Icons.insert_emoticon,
+            size: 50,
+            color: Colors.black,
+          ),
+          Text(widget.id.toString()),
+          Text(names,
+              style: GoogleFonts.overpass(fontSize: 40, color: Colors.black)),
+          Image.network(images,
+              loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            } else {
+              return const CircularProgressIndicator();
+            }
+          }),
+          const Divider(
+              color: Colors.black,
+              height: 20,
+              indent: 30,
+              endIndent: 30,
+              thickness: 1),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Icon(
-                Icons.insert_emoticon,
-                size: 50,
-                color: Colors.black,
-              ),
-              Text(widget.id.toString()),
-              Text(
-                names,
-                style: GoogleFonts.overpass(fontSize: 40, color: Colors.black),
-              ),
-              Image.network(images,
-                  loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              }),
-              const Divider(
-                  color: Colors.black,
-                  height: 20,
-                  indent: 30,
-                  endIndent: 30,
-                  thickness: 1),
               ConstrainedBox(
                   constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 3 / 4),
+                      maxWidth: MediaQuery.of(context).size.width * 1 / 2),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 20)),
@@ -108,16 +155,40 @@ class _ItemPageState extends State<ItemPage> {
                         children: [
                           const Icon(
                             Icons.shopping_basket_outlined,
-                            size: 32,
+                            size: 28,
                           ),
                           Text(
                             'Add To Basket',
-                            style: GoogleFonts.overpass(fontSize: 24),
+                            style: GoogleFonts.overpass(fontSize: 20),
                           )
                         ],
-                      )))
+                      ))),
+              Text(itemsNumber.toString(),
+                  style: GoogleFonts.overpass(fontSize: 26)),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.black45,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: () => incr(),
+                        icon: const Icon(Icons.plus_one,
+                            color: Colors.white, size: 24)),
+                    IconButton(
+                        onPressed: () => decr(),
+                        icon: const Icon(
+                          Icons.exposure_minus_1,
+                          color: Colors.white,
+                          size: 24,
+                        ))
+                  ],
+                ),
+              )
             ],
-          ),
-        ));
+          )
+        ])));
   }
 }

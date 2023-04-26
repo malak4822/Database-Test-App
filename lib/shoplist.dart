@@ -56,7 +56,6 @@ class _MyShopState extends State<MyShop> {
                               id: index,
                               myRows: _rows,
                             )));
-                // MaterialPageRoute(builder: (context) => MyHomePage(row: _rows));
               },
               child: Container(
                 decoration: BoxDecoration(
