@@ -21,14 +21,16 @@ class _MyShopState extends State<MyShop> {
   late Future func;
   @override
   void initState() {
-    showRecords();
+    getProducts();
     super.initState();
   }
 
   bool essa = false;
   bool isLiked = false;
+  int productsNumber = 0;
 
-  Future showRecords() async {
+  Future getProducts() async {
+    _rows = [];
     wynik = await connection.query('SELECT * FROM thumbnailContent');
     for (var row in wynik) {
       final map = [row[1], row[2]];
@@ -36,15 +38,7 @@ class _MyShopState extends State<MyShop> {
         _rows.add(map);
       });
     }
-  }
-
-  int countProducts() {
-    print(_rows.length);
-    // debugPrint(_rows
-    //     .fold(0, (sum, karta) => sum + (karta.isNotEmpty ? 1 : 0))
-    //     .toString());
-
-    return _rows.fold(0, (sum, karta) => sum + (karta.isNotEmpty ? 1 : 0));
+    productsNumber = _rows.length;
   }
 
   @override
@@ -55,7 +49,7 @@ class _MyShopState extends State<MyShop> {
         padding: const EdgeInsets.all(16),
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        children: List.generate(countProducts(), (index) {
+        children: List.generate(productsNumber, (index) {
           return InkWell(
               onTap: () {
                 Navigator.push(

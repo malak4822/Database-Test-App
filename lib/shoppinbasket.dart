@@ -15,6 +15,8 @@ void changeIndex() {
   currentIndex = 0;
 }
 
+var countin = karta;
+
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
   void deleteProduct(int ind) {
     setState(() {
@@ -22,13 +24,11 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
     });
   }
 
+  List<int> distinctedCart = [];
   int removeDuplications() {
-    print(karta);
-    var distincted = karta.toSet();
-    return distincted.length;
+    distinctedCart = karta.toSet().toList();
+    return distinctedCart.length;
   }
-
-  bool isChecked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -44,44 +44,66 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
           textAlign: TextAlign.center,
         ),
         Column(
-            children: List.generate(karta.length, (index) {
+            children: List.generate(removeDuplications(), (index) {
+          bool isChecked = true;
+          int productQuantity = 1;
+
           var item = widget.rows?[karta[index]];
-          for (;;) {
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              height: 120,
-              color: const Color.fromARGB(255, 110, 110, 110),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    child: Image(image: NetworkImage(item![0].toString())),
-                    onTap: () => changeIndex(),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        deleteProduct(index);
-                      },
-                      icon: const Icon(
-                        Icons.restore_from_trash_rounded,
-                        size: 36,
-                        color: Colors.white,
-                      )),
-                  Text(item[1].toString()),
-                  // Text('Ilość : ${widget.itemsNumber}'),
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                  )
-                ],
-              ),
-            );
+
+          print("COUNTIN: ${countin}");
+          print("DISTINCTED : ${distinctedCart}");
+          while (karta.length > distinctedCart.length) {
+            if (countin.contains(karta[index])) {
+              print('dodano ilosc');
+              countin.remove(karta[index]);
+              setState(() {
+                ++productQuantity;
+              });
+            }
           }
+
+          print('ilość :$productQuantity');
+
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            height: 120,
+            color: const Color.fromARGB(255, 110, 110, 110),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  child: Image(image: NetworkImage(item![0].toString())),
+                  onTap: () => changeIndex(),
+                ),
+                IconButton(
+                    onPressed: () {
+                      deleteProduct(index);
+                    },
+                    icon: const Icon(
+                      Icons.restore_from_trash_rounded,
+                      size: 32,
+                      color: Colors.white,
+                    )),
+                Expanded(
+                    child: Text(item[1].toString(),
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.overpass(color: Colors.white))),
+                Text(
+                  'Ilość : $productQuantity',
+                  style: GoogleFonts.overpass(color: Colors.white),
+                ),
+                Checkbox(
+                  checkColor: Colors.white,
+                  value: isChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isChecked = value!;
+                    });
+                  },
+                )
+              ],
+            ),
+          );
         }))
       ],
     )));
