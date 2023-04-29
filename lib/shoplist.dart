@@ -38,6 +38,15 @@ class _MyShopState extends State<MyShop> {
     }
   }
 
+  int countProducts() {
+    print(_rows.length);
+    // debugPrint(_rows
+    //     .fold(0, (sum, karta) => sum + (karta.isNotEmpty ? 1 : 0))
+    //     .toString());
+
+    return _rows.fold(0, (sum, karta) => sum + (karta.isNotEmpty ? 1 : 0));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -46,16 +55,14 @@ class _MyShopState extends State<MyShop> {
         padding: const EdgeInsets.all(16),
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        children: List.generate(_rows.length, (index) {
+        children: List.generate(countProducts(), (index) {
           return InkWell(
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ItemPage(
-                              id: index,
-                              myRows: _rows,
-                            )));
+                        builder: (context) =>
+                            ItemPage(id: index, myRows: _rows)));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -63,6 +70,8 @@ class _MyShopState extends State<MyShop> {
                       BoxShadow(blurRadius: 3),
                     ],
                     image: DecorationImage(
+                      onError: (exception, stackTrace) =>
+                          const Text("Refresh App"),
                       fit: BoxFit.fill,
                       image: NetworkImage(_rows[index][0].toString()),
                     ),

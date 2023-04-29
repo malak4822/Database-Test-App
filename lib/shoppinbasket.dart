@@ -44,43 +44,44 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
           textAlign: TextAlign.center,
         ),
         Column(
-            children: List.generate(removeDuplications(), (index) {
+            children: List.generate(karta.length, (index) {
           var item = widget.rows?[karta[index]];
-
-          return Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            height: 120,
-            color: const Color.fromARGB(255, 110, 110, 110),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  child: Image(image: NetworkImage(item![0].toString())),
-                  onTap: () => changeIndex(),
-                ),
-                IconButton(
-                    onPressed: () {
-                      deleteProduct(index);
+          for (;;) {
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              height: 120,
+              color: const Color.fromARGB(255, 110, 110, 110),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    child: Image(image: NetworkImage(item![0].toString())),
+                    onTap: () => changeIndex(),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        deleteProduct(index);
+                      },
+                      icon: const Icon(
+                        Icons.restore_from_trash_rounded,
+                        size: 36,
+                        color: Colors.white,
+                      )),
+                  Text(item[1].toString()),
+                  // Text('Ilość : ${widget.itemsNumber}'),
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
                     },
-                    icon: const Icon(
-                      Icons.restore_from_trash_rounded,
-                      size: 36,
-                      color: Colors.white,
-                    )),
-                Text(item[1].toString()),
-                // Text('Ilość : ${widget.itemsNumber}'),
-                Checkbox(
-                  checkColor: Colors.white,
-                  value: isChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isChecked = value!;
-                    });
-                  },
-                )
-              ],
-            ),
-          );
+                  )
+                ],
+              ),
+            );
+          }
         }))
       ],
     )));
