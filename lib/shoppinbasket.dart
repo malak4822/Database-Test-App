@@ -18,6 +18,8 @@ void changeIndex() {
 var countin = karta;
 
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
+  var map = Map();
+
   void deleteProduct(int ind) {
     setState(() {
       karta.remove(karta[ind]);
@@ -32,6 +34,15 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
 
   @override
   Widget build(BuildContext context) {
+    karta.forEach((element) {
+      if (!map.containsKey(element)) {
+        map[element] = 1;
+      } else {
+        map[element] += 1;
+      }
+    });
+    print(karta);
+
     return Scaffold(
         body: Center(
             child: ListView(
@@ -47,22 +58,24 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
             children: List.generate(removeDuplications(), (index) {
           bool isChecked = true;
           int productQuantity = 1;
-
           var item = widget.rows?[karta[index]];
 
-          print("COUNTIN: ${countin}");
-          print("DISTINCTED : ${distinctedCart}");
-          while (karta.length > distinctedCart.length) {
-            if (countin.contains(karta[index])) {
-              print('dodano ilosc');
-              countin.remove(karta[index]);
-              setState(() {
-                ++productQuantity;
-              });
-            }
-          }
+          print('object');
 
-          print('ilość :$productQuantity');
+          print('nr-> $index, ilość produktu-> ${map[index]}');
+
+          // map.toString();
+
+          //03 42
+
+          // while (countin.length > distinctedCart.length) {
+          //   if (countin.contains(karta[index])) {
+          //     countin.removeAt(index);
+          //     setState(() {
+          //       ++productQuantity;
+          //     });
+          //   }
+          // }
 
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8),

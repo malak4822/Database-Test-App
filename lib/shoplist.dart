@@ -30,7 +30,7 @@ class _MyShopState extends State<MyShop> {
   int productsNumber = 0;
 
   Future getProducts() async {
-    _rows = [];
+    // _rows = [];
     wynik = await connection.query('SELECT * FROM thumbnailContent');
     for (var row in wynik) {
       final map = [row[1], row[2]];
