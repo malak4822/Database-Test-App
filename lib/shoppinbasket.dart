@@ -18,7 +18,7 @@ void changeIndex() {
 var countin = karta;
 
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
-  var map = Map();
+  Map map = {};
 
   void deleteProduct(int ind) {
     setState(() {
@@ -27,21 +27,27 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
   }
 
   List<int> distinctedCart = [];
+
   int removeDuplications() {
     distinctedCart = karta.toSet().toList();
     return distinctedCart.length;
   }
 
+  var key;
   @override
   Widget build(BuildContext context) {
-    karta.forEach((element) {
-      if (!map.containsKey(element)) {
-        map[element] = 1;
+    karta.forEach((productKey) {
+      if (!map.containsKey(productKey)) {
+        map[productKey] = 1;
       } else {
-        map[element] += 1;
+        map[productKey] += 1;
       }
+      key = productKey;
+      // print('nr-> $productKey, ilość produktu-> ${map[productKey]}');
     });
-    print(karta);
+
+    // print(karta);
+    // print(map);
 
     return Scaffold(
         body: Center(
@@ -57,26 +63,11 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
         Column(
             children: List.generate(removeDuplications(), (index) {
           bool isChecked = true;
-          int productQuantity = 1;
           var item = widget.rows?[karta[index]];
+          print(map);
+          print(key);
 
-          print('object');
-
-          print('nr-> $index, ilość produktu-> ${map[index]}');
-
-          // map.toString();
-
-          //03 42
-
-          // while (countin.length > distinctedCart.length) {
-          //   if (countin.contains(karta[index])) {
-          //     countin.removeAt(index);
-          //     setState(() {
-          //       ++productQuantity;
-          //     });
-          //   }
-          // }
-
+          if (map[key] > 1) {}
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
             height: 120,
@@ -102,7 +93,7 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
                         textAlign: TextAlign.center,
                         style: GoogleFonts.overpass(color: Colors.white))),
                 Text(
-                  'Ilość : $productQuantity',
+                  'Ilość : ${map[key]}',
                   style: GoogleFonts.overpass(color: Colors.white),
                 ),
                 Checkbox(
