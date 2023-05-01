@@ -15,15 +15,16 @@ void changeIndex() {
   currentIndex = 0;
 }
 
-var countin = karta;
+List kartaCopy = karta;
+Map map = {};
 
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
-  Map map = {};
-
-  void deleteProduct(int ind) {
+  void deleteProduct() {
     setState(() {
-      karta.remove(karta[ind]);
+      kartaCopy.removeLast();
     });
+    print('produkty w koszyku : $karta');
+    print('produkty w kii : $kartaCopy');
   }
 
   List<int> distinctedCart = [];
@@ -33,21 +34,17 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
     return distinctedCart.length;
   }
 
-  var key;
   @override
   Widget build(BuildContext context) {
-    karta.forEach((productKey) {
-      if (!map.containsKey(productKey)) {
-        map[productKey] = 1;
+    for (int key in karta) {
+      if (!map.containsKey(key)) {
+        map[key] = 1;
       } else {
-        map[productKey] += 1;
+        map[key] += 1;
       }
-      key = productKey;
-      // print('nr-> $productKey, ilość produktu-> ${map[productKey]}');
-    });
-
-    // print(karta);
-    // print(map);
+      print('done');
+    }
+    debugPrint(map.toString());
 
     return Scaffold(
         body: Center(
@@ -62,12 +59,13 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
         ),
         Column(
             children: List.generate(removeDuplications(), (index) {
+          int productKey = map.keys.toList().elementAt(index);
+          int productQuantity = map[productKey];
           bool isChecked = true;
-          var item = widget.rows?[karta[index]];
-          print(map);
-          print(key);
-
-          if (map[key] > 1) {}
+          List<dynamic>? itemContainer = widget.rows?[productKey];
+          print(
+              'produkt nr-> $productKey, ilość-> $productQuantity, zawartość-> $itemContainer');
+          //0:2   4:3
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
             height: 120,
@@ -76,12 +74,13 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  child: Image(image: NetworkImage(item![0].toString())),
+                  child:
+                      Image(image: NetworkImage(itemContainer![0].toString())),
                   onTap: () => changeIndex(),
                 ),
                 IconButton(
                     onPressed: () {
-                      deleteProduct(index);
+                      deleteProduct();
                     },
                     icon: const Icon(
                       Icons.restore_from_trash_rounded,
@@ -89,11 +88,11 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
                       color: Colors.white,
                     )),
                 Expanded(
-                    child: Text(item[1].toString(),
+                    child: Text(itemContainer[1].toString(),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.overpass(color: Colors.white))),
                 Text(
-                  'Ilość : ${map[key]}',
+                  'Ilość : $productQuantity',
                   style: GoogleFonts.overpass(color: Colors.white),
                 ),
                 Checkbox(

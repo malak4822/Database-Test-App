@@ -44,16 +44,11 @@ class _ItemPageState extends State<ItemPage> {
     var images = widget.myRows[widget.id][0].toString();
     var names = widget.myRows[widget.id][1].toString();
 
-    var map = Map();
-
     addProduct() {
       for (int i = 0; i < itemsNumber; ++i) {
         karta.add(widget.id);
       }
-      karta.map((e) {
-        for (int i = 0; i < itemsNumber; ++i) {}
-        e + widget.id;
-      });
+      print(karta);
     }
 
     void showAlert() {
