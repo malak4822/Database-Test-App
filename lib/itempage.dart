@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:databaseapp/main.dart';
 import 'package:databaseapp/shoplist.dart';
-import 'package:databaseapp/shoppinbasket.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ItemPage extends StatefulWidget {
   const ItemPage({super.key, required this.id, required this.myRows});
@@ -17,6 +15,12 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   int itemsNumber = 1;
+
+  void saveBasketItems() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> kartaString = karta.map((e) => e.toString()).toList();
+    prefs.setStringList('basketNumbers', kartaString);
+  }
 
   void changeIndexx() {
     setState(() {
@@ -44,11 +48,10 @@ class _ItemPageState extends State<ItemPage> {
     var images = widget.myRows[widget.id][0].toString();
     var names = widget.myRows[widget.id][1].toString();
 
-    addProduct() {
+    void addProduct() {
       for (int i = 0; i < itemsNumber; ++i) {
         karta.add(widget.id);
       }
-      print(karta);
     }
 
     void showAlert() {
@@ -149,6 +152,7 @@ class _ItemPageState extends State<ItemPage> {
                           padding: const EdgeInsets.symmetric(vertical: 20)),
                       onPressed: () {
                         addProduct();
+                        saveBasketItems();
                         showAlert();
                       },
                       child: Row(

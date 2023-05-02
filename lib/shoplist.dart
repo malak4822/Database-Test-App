@@ -2,6 +2,7 @@ import 'package:databaseapp/itempage.dart';
 import 'package:databaseapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyShop extends StatefulWidget {
   const MyShop({super.key});
@@ -21,8 +22,15 @@ class _MyShopState extends State<MyShop> {
   late Future func;
   @override
   void initState() {
+    loadBusketItems();
     getProducts();
     super.initState();
+  }
+
+  void loadBusketItems() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> kartaString = prefs.getStringList('basketNumbers') ?? [];
+    karta = kartaString.map((e) => int.parse(e)).toList();
   }
 
   bool essa = false;
@@ -30,7 +38,6 @@ class _MyShopState extends State<MyShop> {
   int productsNumber = 0;
 
   Future getProducts() async {
-    // _rows = [];
     wynik = await connection.query('SELECT * FROM thumbnailContent');
     for (var row in wynik) {
       final map = [row[1], row[2]];
