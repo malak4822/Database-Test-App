@@ -21,10 +21,13 @@ Map map = {};
 
 class _ShoppIngBasketState extends State<ShoppIngBasket> {
   void deleteProduct(quantity, key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     karta.remove(key);
     setState(() {
       --quantity;
     });
+    List<String> kartaString = karta.map((e) => e.toString()).toList();
+    prefs.setStringList('basketNumbers', kartaString);
   }
 
   List<int> distinctedCart = [];
