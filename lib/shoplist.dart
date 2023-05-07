@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:databaseapp/itempage.dart';
 import 'package:databaseapp/main.dart';
+import 'package:databaseapp/refreshanimation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -19,16 +18,19 @@ class MyShop extends StatefulWidget {
   }
 }
 
+var time;
+
 List<int> karta = [];
 List<List> _rows = [];
 int productsNumber = 0;
 
 class _MyShopState extends State<MyShop> {
   late Future func;
+
   @override
   void initState() {
     loadBusketItems();
-    getProducts().then((value) => fillProductsList());
+    fillProductsList();
     super.initState();
   }
 
@@ -38,10 +40,9 @@ class _MyShopState extends State<MyShop> {
     karta = kartaString.map((e) => int.parse(e)).toList();
   }
 
-  bool essa = false;
-  bool isLiked = false;
-
-  void fillProductsList() {
+  void fillProductsList() async {
+    final stopwatch = Stopwatch()..start();
+    wynik = await connection.query('SELECT * FROM thumbnailContent');
     _rows = [];
     for (var row in wynik) {
       final map = [row[1], row[2]];
@@ -50,43 +51,21 @@ class _MyShopState extends State<MyShop> {
       });
     }
     productsNumber = _rows.length;
+    time = stopwatch.elapsed;
+    print('eee czas to ====> ${time}');
+    stopwatch.stop();
   }
 
-  Future getProducts() async {
-    wynik = await connection.query('SELECT * FROM thumbnailContent');
-  }
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-      GlobalKey<LiquidPullToRefreshState>();
-
-  Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3));
-
-  Future<void> _handleRefresh() {
-    final Completer<void> completer = Completer<void>();
-    Timer(const Duration(seconds: 3), () {
-      completer.complete();
-    });
-
-    return completer.future.then<void>((_) {
-      ScaffoldMessenger.of(_scaffoldKey.currentState!.context).showSnackBar(
-        SnackBar(
-          content: const Text('Refresh complete'),
-          action: SnackBarAction(
-            label: 'RETRY',
-            onPressed: () {
-              _refreshIndicatorKey.currentState!.show();
-            },
-          ),
-        ),
-      );
-    });
-  }
+  bool essa = false;
+  bool isLiked = false;
 
   @override
   Widget build(BuildContext context) {
     return LiquidPullToRefresh(
-        onRefresh: _handleRefresh,
+        onRefresh: () {
+          fillProductsList();
+          return handleRefresh();
+        },
         child: Center(
           child: GridView.count(
             crossAxisCount: 2,

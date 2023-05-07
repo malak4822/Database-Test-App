@@ -1,3 +1,4 @@
+import 'package:databaseapp/refreshanimation.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/settings.dart';
 import 'package:databaseapp/shoppinbasket.dart';
@@ -43,12 +44,12 @@ class MyHomePage extends StatefulWidget {
   final List<List>? row;
   final String? title;
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
 int currentIndex = 0;
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   changeindex(int index) {
     setState(() {
       currentIndex = index;
@@ -66,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       const MySettings(),
     ];
     return Scaffold(
+        key: scaffoldKey,
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: changeindex,
