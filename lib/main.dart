@@ -8,6 +8,7 @@ import 'package:mysql1/mysql1.dart';
 late MySqlConnection connection;
 var wynik;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   try {
     final conn = await MySqlConnection.connect(ConnectionSettings(
         host: 'hosting2338925.online.pro',
@@ -60,7 +61,6 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var sklep = const MyShop();
     var row = sklep.getRows;
-
     List<Widget> screens = [
       const MyShop(),
       ShoppIngBasket(rows: row),

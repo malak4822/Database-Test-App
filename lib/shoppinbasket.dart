@@ -30,13 +30,6 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
     prefs.setStringList('basketNumbers', kartaString);
   }
 
-  List<int> distinctedCart = [];
-
-  int removeDuplications() {
-    distinctedCart = karta.toSet().toList();
-    return distinctedCart.length;
-  }
-
   @override
   Widget build(BuildContext context) {
     map.clear();
@@ -59,7 +52,7 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
         textAlign: TextAlign.center,
       ),
       Column(
-          children: List.generate(removeDuplications(), (index) {
+          children: List.generate(map.length, (index) {
         int productKey = map.keys.toList().elementAt(index);
         int productQuantity = map[productKey];
         bool isChecked = true;

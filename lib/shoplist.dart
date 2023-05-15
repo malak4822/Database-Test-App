@@ -52,7 +52,6 @@ class _MyShopState extends State<MyShop> {
     }
     productsNumber = _rows.length;
     time = stopwatch.elapsed;
-    print('eee czas to ====> ${time}');
     stopwatch.stop();
   }
 
