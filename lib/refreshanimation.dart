@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'package:databaseapp/main.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:flutter/material.dart';
 
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey scaffoldKey = GlobalKey<MyHomePageState>();
 
-Future<void> handleRefresh() {
+Future<void> handleRefresh() async {
   print(time);
   final Completer<void> completer = Completer<void>();
   Timer(time, () {
