@@ -1,7 +1,10 @@
+import 'package:databaseapp/bloc/counter_bloc.dart';
+import 'package:databaseapp/card.dart';
 import 'package:databaseapp/shoplist.dart';
 import 'package:databaseapp/settings.dart';
 import 'package:databaseapp/shoppinbasket.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mysql1/mysql1.dart';
 
 late MySqlConnection connection;
@@ -27,13 +30,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo'),
-    );
+    return BlocProvider(
+        create: (context) => CounterBloc(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: MyHomePage(title: 'Flutter Demo Home Page'),
+        ));
   }
 }
 
@@ -49,6 +54,13 @@ class MyHomePage extends StatefulWidget {
 int currentIndex = 0;
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Widget> screens = [
+    MyShop(),
+    const MyCard(),
+    MySettings(),
+  ];
+  int selectedIndex = 0;
+
   changeindex(int index) {
     setState(() {
       currentIndex = index;
@@ -63,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Widget> screens = [
       const MyShop(),
       ShoppIngBasket(rows: row),
-      const MySettings(),
+      MySettings(),
     ];
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
@@ -71,11 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: changeindex,
             items: const [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.production_quantity_limits), label: 'items'),
+                  icon: Icon(Icons.production_quantity_limits), label: 'Shop'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.card_giftcard), label: 'card'),
+                  icon: Icon(Icons.card_giftcard), label: 'My Card'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.settings), label: 'settings')
+                  icon: Icon(Icons.person), label: 'Account')
             ]),
         appBar: AppBar(
           title: Text(widget.title ?? 'Flutter Demo'),

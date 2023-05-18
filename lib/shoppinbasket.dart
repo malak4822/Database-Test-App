@@ -36,16 +36,11 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
         body: Center(
             child: ListView(
       children: [
-        const SizedBox(height: 10),
-        Text(
-          'Basket',
-          style:
-              GoogleFonts.overpass(fontSize: 38, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
         Column(
             children: List.generate(removeDuplications(), (index) {
           var item = widget.rows?[karta[index]];
+
+          print(item);
 
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
