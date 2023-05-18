@@ -5,7 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ItemPage extends StatefulWidget {
-  const ItemPage({super.key, required this.id, required this.myRows});
+  const ItemPage(
+      {super.key,
+      required this.id,
+      required this.myRows,
+      this.backFromBuyMore});
+  final Function? backFromBuyMore;
   final int id;
   final List<List> myRows;
 
@@ -66,6 +71,7 @@ class _ItemPageState extends State<ItemPage> {
                 actionsAlignment: MainAxisAlignment.spaceEvenly,
                 actionsOverflowAlignment: OverflowBarAlignment.center,
                 actions: [
+                  // Switch(value: value, onChanged: onChanged)
                   if (itemsNumber == 1)
                     Text(
                       'Dodano do koszyka',
@@ -83,6 +89,7 @@ class _ItemPageState extends State<ItemPage> {
                     ),
                   ElevatedButton(
                       onPressed: () {
+                        widget.backFromBuyMore!();
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pushReplacement(

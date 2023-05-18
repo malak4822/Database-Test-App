@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'package:databaseapp/itempage.dart';
 import 'package:databaseapp/main.dart';
-import 'package:databaseapp/refreshanimation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyShop extends StatefulWidget {
-  const MyShop({super.key, this.backFromBuyMore});
+  MyShop({super.key, this.backFromBuyMore, this.fillProductsListe});
+
+  var fillProductsListe;
 
   @override
-  State<MyShop> createState() => _MyShopState();
+  State<MyShop> createState() => MyShopState();
 
-  final Function backFromBuyMore;
+  final Function? backFromBuyMore;
   List<List>? get getRows {
     return _rows;
   }
@@ -25,23 +26,8 @@ List<int> karta = [];
 List<List> _rows = [];
 int productsNumber = 0;
 
-class _MyShopState extends State<MyShop> {
-  late Future func;
-
-  @override
-  void initState() {
-    loadBusketItems();
-    fillProductsList();
-    super.initState();
-  }
-
-  void loadBusketItems() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> kartaString = prefs.getStringList('basketNumbers') ?? [];
-    karta = kartaString.map((e) => int.parse(e)).toList();
-  }
-
-  void fillProductsList() async {
+class MyShopState extends State<MyShop> {
+  fillProductsList(connection) async {
     final stopwatch = Stopwatch()..start();
     wynik = await connection.query('SELECT * FROM thumbnailContent');
     _rows = [];
@@ -56,15 +42,31 @@ class _MyShopState extends State<MyShop> {
     stopwatch.stop();
   }
 
+  late Future func;
+
+  @override
+  void initState() {
+    loadBusketItems();
+    fillProductsList(null);
+    super.initState();
+  }
+
+  void loadBusketItems() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> kartaString = prefs.getStringList('basketNumbers') ?? [];
+    karta = kartaString.map((e) => int.parse(e)).toList();
+  }
+
   bool essa = false;
   bool isLiked = false;
-
+  Future empty() async {}
   @override
   Widget build(BuildContext context) {
     return LiquidPullToRefresh(
         onRefresh: () {
-          fillProductsList();
-          return handleRefresh();
+          return empty();
+          // fillProductsList();
+          // return handleRefresh();
         },
         child: Center(
           child: GridView.count(
@@ -78,8 +80,10 @@ class _MyShopState extends State<MyShop> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                ItemPage(id: index, myRows: _rows)));
+                            builder: (context) => ItemPage(
+                                id: index,
+                                myRows: _rows,
+                                backFromBuyMore: widget.backFromBuyMore)));
                   },
                   child: Container(
                     decoration: BoxDecoration(
