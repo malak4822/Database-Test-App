@@ -48,9 +48,15 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => MyHomePageState();
 }
 
-int currentIndex = 0;
-
 class MyHomePageState extends State<MyHomePage> {
+  void changeIndex() {
+    setState(() {
+      currentIndex = 1;
+    });
+  }
+
+  int currentIndex = 0;
+
   changeindex(int index) {
     setState(() {
       currentIndex = index;
@@ -59,10 +65,12 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var sklep = const MyShop();
+    var sklep = MyShop(
+      backFromBuyMore: null,
+    );
     var row = sklep.getRows;
     List<Widget> screens = [
-      const MyShop(),
+      MyShop(backFromBuyMore: changeIndex),
       ShoppIngBasket(rows: row),
       const MySettings(),
     ];

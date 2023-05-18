@@ -12,10 +12,6 @@ class ShoppIngBasket extends StatefulWidget {
   State<ShoppIngBasket> createState() => _ShoppIngBasketState();
 }
 
-void changeIndex() {
-  currentIndex = 0;
-}
-
 List kartaCopy = karta;
 Map map = {};
 
@@ -64,10 +60,7 @@ class _ShoppIngBasketState extends State<ShoppIngBasket> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InkWell(
-                child: Image(image: NetworkImage(itemContainer![0].toString())),
-                onTap: () => changeIndex(),
-              ),
+              Image(image: NetworkImage(itemContainer![0].toString())),
               IconButton(
                   onPressed: () {
                     deleteProduct(productQuantity, productKey);

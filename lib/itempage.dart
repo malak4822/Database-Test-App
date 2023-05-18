@@ -22,12 +22,6 @@ class _ItemPageState extends State<ItemPage> {
     prefs.setStringList('basketNumbers', kartaString);
   }
 
-  void changeIndexx() {
-    setState(() {
-      currentIndex = 1;
-    });
-  }
-
   void incr() {
     setState(() {
       ++itemsNumber;
@@ -89,7 +83,6 @@ class _ItemPageState extends State<ItemPage> {
                     ),
                   ElevatedButton(
                       onPressed: () {
-                        changeIndexx();
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pushReplacement(

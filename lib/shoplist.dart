@@ -8,11 +8,12 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyShop extends StatefulWidget {
-  const MyShop({super.key});
+  const MyShop({super.key, this.backFromBuyMore});
 
   @override
   State<MyShop> createState() => _MyShopState();
 
+  final Function backFromBuyMore;
   List<List>? get getRows {
     return _rows;
   }
