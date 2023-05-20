@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, this.title, this.row});
+  MyHomePage({super.key, this.title, this.products});
 
-  final List<List>? row;
+  final List<List>? products;
   final String? title;
   @override
   State<MyHomePage> createState() => MyHomePageState();
@@ -59,11 +59,9 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var sklep = const MyShop();
-    var row = sklep.getRows;
     List<Widget> screens = [
       const MyShop(),
-      ShoppIngBasket(rows: row),
+      ShoppIngBasket(products: widget.products!),
       const MySettings(),
     ];
     return Scaffold(
