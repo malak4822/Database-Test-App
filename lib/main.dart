@@ -5,18 +5,19 @@ import 'package:databaseapp/shoppinbasket.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
-late MySqlConnection connection;
 var wynik;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    final conn = await MySqlConnection.connect(ConnectionSettings(
+    ConnectionSettings connData = ConnectionSettings(
         host: 'hosting2338925.online.pro',
         port: 3306,
         user: '00799458_malakdb',
         password: 'Rm31Uc8RHwr62aF',
-        db: '00799458_malakdb'));
-    connection = conn;
+        db: '00799458_malakdb');
+    final conn = await MySqlConnection.connect(connData).then((val) {
+      MyShopState().fillProductsList(val);
+    });
   } catch (e) {
     print('error to $e');
   }
@@ -48,9 +49,15 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => MyHomePageState();
 }
 
-int currentIndex = 0;
-
 class MyHomePageState extends State<MyHomePage> {
+  void changeIndexx() {
+    setState(() {
+      currentIndex = 1;
+    });
+  }
+
+  int currentIndex = 0;
+
   changeindex(int index) {
     setState(() {
       currentIndex = index;
@@ -59,13 +66,14 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var sklep = const MyShop();
+    var row = sklep.getRows;
     List<Widget> screens = [
       const MyShop(),
-      ShoppIngBasket(products: widget.products!),
+      ShoppIngBasket(rows: row),
       const MySettings(),
     ];
     return Scaffold(
-        key: scaffoldKey,
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: changeindex,
