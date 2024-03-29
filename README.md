@@ -1,5 +1,5 @@
 ## Database Test App
-This is a new Flutter shop project, primarily initiated for educational purposes. It was started but never completed due to other projects.
+Flutter shop project! Originally conceived for educational purposes, this app allows users to add products to their shopping cart and manage them seamlessly. Although temporarily paused, it serves as an invaluable learning experience for me.
 
 ## Used To Do App
 - MySql1 DB Package
